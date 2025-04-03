@@ -17,5 +17,6 @@ import { LoginProvider } from './provider/login.provider';
     LoginProvider,
   ],
   controllers: [AuthController],
+  exports: [AuthService, HashingProvider],
 })
 export class AuthModule {}
