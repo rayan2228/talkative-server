@@ -1,18 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Body, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { User } from '../schemas/user.schema';
+import { FindOneUserByEmail } from './find-one-user-by-email';
 import { UserCreateProvider } from './user-create.provider';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
     private readonly userCreateProvider: UserCreateProvider,
+    private readonly findOneUserByEmail: FindOneUserByEmail,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     return await this.userCreateProvider.create(createUserDto);
+  }
+
+  async findByEmail(@Body() email: string) {
+    return await this.findOneUserByEmail.findOneByEmail(email);
   }
 }
