@@ -5,7 +5,10 @@ import {
   RequestTimeoutException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/provider/users.service';
+import jwtConfig from '../config/jwt.config';
 import { LoginDto } from '../dto/login.dto';
 import { HashingProvider } from './hashing.provider';
 
@@ -15,13 +18,13 @@ export class LoginProvider {
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
+    private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
 
   public async login(loginDto: LoginDto) {
-    // find user by email ID
     const user = await this.usersService.findByEmail(loginDto.email);
-    // Throw exception if user is not found
-    // Above | Taken care by the findInByEmail method
 
     let isEqual: boolean = false;
 
@@ -41,7 +44,19 @@ export class LoginProvider {
       throw new UnauthorizedException('Authentication failed');
     }
 
+    const payload = {
+      email: user.email,
+      sub: user._id,
+    };
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.jwtConfiguration.secret,
+      expiresIn: this.jwtConfiguration.expiresIn,
+      issuer: this.jwtConfiguration.issuer,
+      audience: this.jwtConfiguration.audience,
+    });
     // Send confirmation
-    return true;
+    return {
+      accessToken,
+    };
   }
 }
