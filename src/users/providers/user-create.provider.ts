@@ -18,50 +18,52 @@ export class UserCreateProvider {
     @Inject(forwardRef(() => HashingProvider))
     private readonly hashingProvider: HashingProvider,
   ) {}
+
   public async create(createUserDto: CreateUserDto) {
     let existingUser = null;
 
     try {
-      // Check is user exists with same email
       existingUser = await this.userModel.findOne({
         email: createUserDto.email,
       });
     } catch (error) {
-      // Might save the details of the exception
-      // Information which is sensitive
       throw new RequestTimeoutException(
-        'Unable to process your request at the moment please try later',
+        'Unable to process your request at the moment. Please try again later.',
         {
-          description: 'Error connecting to the database',
+          description: `Error connecting to the database ${error}`,
         },
       );
     }
 
-    // Handle exception
     if (existingUser) {
       throw new BadRequestException(
         'The user already exists, please check your email.',
       );
     }
 
-    // Create a new user
-    let newUser: User;
     try {
-      newUser = await this.userModel.create({
+      const hashedPassword = await this.hashingProvider.hashPassword(
+        createUserDto.password,
+      );
+
+      const newUser = await this.userModel.create({
         ...createUserDto,
-        password: await this.hashingProvider.hashPassword(
-          createUserDto.password,
-        ),
+        password: hashedPassword,
       });
+
+      const user = await this.userModel
+        .findById(newUser._id)
+        .lean()
+        .select('-password');
+
+      return user;
     } catch (error) {
       throw new RequestTimeoutException(
-        'Unable to process your request at the moment please try later',
+        'Unable to process your request at the moment. Please try again later.',
         {
-          description: 'Error connecting to the the datbase',
+          description: `Error connecting to the database ${error}`,
         },
       );
     }
-
-    return newUser;
   }
 }

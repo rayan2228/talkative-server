@@ -2,7 +2,7 @@ export interface ActiveUserData {
   /**
    * The ID of the user
    */
-  sub: number;
+  sub: string;
 
   /**
    * User's email address

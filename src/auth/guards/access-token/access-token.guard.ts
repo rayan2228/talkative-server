@@ -20,13 +20,12 @@ export class AccessTokenGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<Request>(); // ✅ Typed properly
+    const request = context.switchToHttp().getRequest<Request>();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
       throw new UnauthorizedException('Access token missing');
     }
-
     try {
       const payload = await this.jwtService.verifyAsync(
         token,
@@ -34,14 +33,15 @@ export class AccessTokenGuard implements CanActivate {
       );
       request[REQUEST_USER_KEY] = payload;
     } catch (err) {
-      throw new UnauthorizedException('Invalid or expired token');
+      console.log(err);
+      throw new UnauthorizedException('Invalid or expired token 1');
     }
 
     return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const token = request.headers.authorization?.split(' ')[0];
+    const token = request.headers.authorization?.split(' ')[1];
     return token;
   }
 }

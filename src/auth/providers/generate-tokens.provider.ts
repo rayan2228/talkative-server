@@ -43,7 +43,6 @@ export class GenerateTokensProvider {
           email: user.email,
         },
       ),
-      // Generate Refresh token without email
       refreshToken = this.signToken(
         user._id,
         this.jwtConfiguration.refreshExpiresIn,

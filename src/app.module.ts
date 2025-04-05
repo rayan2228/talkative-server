@@ -12,6 +12,8 @@ import { AuthenticationGuard } from './auth/guards/authentication/authentication
 import databaseConfig from './config/databaseConfig';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
+import { ChatsController } from './chats/chats.controller';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
   imports: [
@@ -32,8 +34,9 @@ import { UsersModule } from './users/users.module';
     }),
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
+    ChatsModule,
   ],
-  controllers: [AppController, UsersController],
+  controllers: [AppController, UsersController, ChatsController],
   providers: [
     AppService,
     {
