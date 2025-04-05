@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/providers/users.service';
 import jwtConfig from '../config/jwt.config';
 import { LoginDto } from '../dtos/login.dto';
+import { GenerateTokensProvider } from './generate-tokens.provider';
 import { HashingProvider } from './hashing.provider';
 
 @Injectable()
@@ -21,6 +22,7 @@ export class LoginProvider {
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
 
   public async login(loginDto: LoginDto) {
@@ -44,19 +46,7 @@ export class LoginProvider {
       throw new UnauthorizedException('Authentication failed');
     }
 
-    const payload = {
-      email: user.email,
-      sub: user._id,
-    };
-    const accessToken = this.jwtService.sign(payload, {
-      secret: this.jwtConfiguration.secret,
-      expiresIn: this.jwtConfiguration.expiresIn,
-      issuer: this.jwtConfiguration.issuer,
-      audience: this.jwtConfiguration.audience,
-    });
     // Send confirmation
-    return {
-      accessToken,
-    };
+    return await this.generateTokensProvider.generateTokens(user);
   }
 }
