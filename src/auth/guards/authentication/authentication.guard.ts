@@ -57,7 +57,7 @@ export class AuthenticationGuard implements CanActivate {
       case AuthType.None:
         return { canActivate: () => true };
       default:
-        throw new UnauthorizedException(`Unsupported auth type: ${type}`);
+        throw new UnauthorizedException(`Unsupported auth type`);
     }
   }
 }

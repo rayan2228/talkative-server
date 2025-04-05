@@ -22,7 +22,7 @@ export class GenerateTokensProvider {
   public signToken<T>(userId: any, expiresIn: string, payload?: T) {
     return this.jwtService.sign(
       {
-        sub: Number(userId),
+        sub: userId,
         ...payload,
       },
       {
@@ -35,6 +35,8 @@ export class GenerateTokensProvider {
   }
 
   public generateTokens(user: User) {
+    console.log(user);
+
     // Generate Access Token with Email
     const accessToken = this.signToken(
         user._id,

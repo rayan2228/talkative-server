@@ -8,6 +8,8 @@ export class ChatCreateProvider {
   constructor(@InjectModel(Chat.name) private chatModel: Model<Chat>) {}
 
   async createOrGetChat(userId: string, currentUserId: string) {
+    console.log(currentUserId);
+
     const existingChat = await this.chatModel
       .findOne({
         isGroupChat: false,

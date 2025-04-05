@@ -5,10 +5,8 @@ import {
   RequestTimeoutException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/providers/users.service';
-import jwtConfig from '../config/jwt.config';
+import { User } from 'src/users/schemas/user.schema';
 import { LoginDto } from '../dtos/login.dto';
 import { GenerateTokensProvider } from './generate-tokens.provider';
 import { HashingProvider } from './hashing.provider';
@@ -19,34 +17,40 @@ export class LoginProvider {
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
-    private readonly jwtService: JwtService,
-    @Inject(jwtConfig.KEY)
-    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
     private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
 
   public async login(loginDto: LoginDto) {
-    const user = await this.usersService.findByEmail(loginDto.email);
+    // Find user by email
+    const user: User = await this.usersService.findByEmail(loginDto.email);
+    if (!user) {
+      throw new UnauthorizedException('Authentication failed: User not found');
+    }
 
     let isEqual: boolean = false;
 
     try {
-      // Compare the password to hash
+      // Compare the password with the hash
       isEqual = await this.hashingProvider.comparePassword(
         loginDto.password,
         user.password,
       );
     } catch (error) {
-      throw new RequestTimeoutException(error, {
-        description: 'Could not compare the password',
-      });
+      throw new RequestTimeoutException(
+        error.message || 'Could not compare the password',
+        {
+          description: 'Error during password comparison',
+        },
+      );
     }
 
     if (!isEqual) {
-      throw new UnauthorizedException('Authentication failed');
+      throw new UnauthorizedException(
+        'Authentication failed: Incorrect password',
+      );
     }
 
-    // Send confirmation
+    // Generate and return tokens
     return this.generateTokensProvider.generateTokens(user);
   }
 }

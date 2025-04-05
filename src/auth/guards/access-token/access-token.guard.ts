@@ -31,10 +31,11 @@ export class AccessTokenGuard implements CanActivate {
         token,
         this.jwtConfiguration,
       );
+      console.log(payload);
+
       request[REQUEST_USER_KEY] = payload;
     } catch (err) {
-      console.log(err);
-      throw new UnauthorizedException('Invalid or expired token 1');
+      throw new UnauthorizedException('Invalid or expired token ');
     }
 
     return true;
