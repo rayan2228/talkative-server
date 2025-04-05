@@ -1,5 +1,5 @@
 import { Body, Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { FindOneUserByEmail } from './find-one-user-by-email';
 import { UserCreateProvider } from './user-create.provider';
 

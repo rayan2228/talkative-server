@@ -4,10 +4,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from 'src/users/users.module';
 import { AuthController } from './auth.controller';
 import jwtConfig from './config/jwt.config';
-import { AuthService } from './provider/auth.service';
-import { BcryptProvider } from './provider/bcrypt.provider';
-import { HashingProvider } from './provider/hashing.provider';
-import { LoginProvider } from './provider/login.provider';
+import { AuthService } from './providers/auth.service';
+import { BcryptProvider } from './providers/bcrypt.provider';
+import { HashingProvider } from './providers/hashing.provider';
+import { LoginProvider } from './providers/login.provider';
 
 @Module({
   imports: [

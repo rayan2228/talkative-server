@@ -9,6 +9,7 @@ import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express'; // ✅ Import Request from express
 import jwtConfig from 'src/auth/config/jwt.config';
+import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
@@ -31,7 +32,7 @@ export class AccessTokenGuard implements CanActivate {
         token,
         this.jwtConfiguration,
       );
-      request['user'] = payload;
+      request[REQUEST_USER_KEY] = payload;
     } catch (err) {
       throw new UnauthorizedException('Invalid or expired token');
     }

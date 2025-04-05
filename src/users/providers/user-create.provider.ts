@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { HashingProvider } from 'src/auth/provider/hashing.provider';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { HashingProvider } from 'src/auth/providers/hashing.provider';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from '../schemas/user.schema';
 
 @Injectable()

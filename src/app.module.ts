@@ -7,7 +7,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import jwtConfig from './auth/config/jwt.config';
-import { AccessTokenGuard } from './auth/guard/access-token/access-token.guard';
+import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
+import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import databaseConfig from './config/databaseConfig';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
@@ -37,8 +38,9 @@ import { UsersModule } from './users/users.module';
     AppService,
     {
       provide: APP_GUARD,
-      useClass: AccessTokenGuard,
+      useClass: AuthenticationGuard,
     },
+    AccessTokenGuard,
   ],
 })
 export class AppModule {}

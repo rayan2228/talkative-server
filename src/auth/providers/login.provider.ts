@@ -7,9 +7,9 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/provider/users.service';
+import { UsersService } from 'src/users/providers/users.service';
 import jwtConfig from '../config/jwt.config';
-import { LoginDto } from '../dto/login.dto';
+import { LoginDto } from '../dtos/login.dto';
 import { HashingProvider } from './hashing.provider';
 
 @Injectable()
