@@ -47,6 +47,6 @@ export class LoginProvider {
     }
 
     // Send confirmation
-    return await this.generateTokensProvider.generateTokens(user);
+    return this.generateTokensProvider.generateTokens(user);
   }
 }

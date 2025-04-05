@@ -22,7 +22,7 @@ export class GenerateTokensProvider {
   public signToken<T>(userId: any, expiresIn: string, payload?: T) {
     return this.jwtService.sign(
       {
-        sub: userId,
+        sub: Number(userId),
         ...payload,
       },
       {

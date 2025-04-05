@@ -9,6 +9,7 @@ import { BcryptProvider } from './providers/bcrypt.provider';
 import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 import { HashingProvider } from './providers/hashing.provider';
 import { LoginProvider } from './providers/login.provider';
+import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { LoginProvider } from './providers/login.provider';
     AuthService,
     LoginProvider,
     GenerateTokensProvider,
+    RefreshTokensProvider,
   ],
   controllers: [AuthController],
   exports: [AuthService, HashingProvider],

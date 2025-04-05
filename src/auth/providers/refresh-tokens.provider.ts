@@ -50,7 +50,7 @@ export class RefreshTokensProvider {
       const user = await this.usersService.findByEmail(email);
 
       // Generate the tokens
-      return await this.generateTokensProvider.generateTokens(user);
+      return this.generateTokensProvider.generateTokens(user);
     } catch (error) {
       throw new UnauthorizedException(error);
     }
