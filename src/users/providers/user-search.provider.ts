@@ -9,8 +9,6 @@ export class UserSearchProvider {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async search(query: string, currentUserId: string) {
-    console.log(currentUserId);
-
     const searchRegex = new RegExp(query, 'i');
 
     return this.userModel

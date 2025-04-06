@@ -35,8 +35,6 @@ export class GenerateTokensProvider {
   }
 
   public generateTokens(user: User) {
-    console.log(user);
-
     // Generate Access Token with Email
     const accessToken = this.signToken(
         user._id,

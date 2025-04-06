@@ -8,7 +8,6 @@ import { Reflector } from '@nestjs/core';
 import { AUTH_TYPE_KEY } from 'src/auth/decorators/auth-decorator';
 import { AuthType } from 'src/auth/enums/auth-type.enum';
 import { AccessTokenGuard } from '../access-token/access-token.guard';
-
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
   // Set the default Auth Type

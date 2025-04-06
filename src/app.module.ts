@@ -14,6 +14,7 @@ import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import { ChatsController } from './chats/chats.controller';
 import { ChatsModule } from './chats/chats.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ChatsModule } from './chats/chats.module';
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ChatsModule,
+    MessagesModule,
   ],
   controllers: [AppController, UsersController, ChatsController],
   providers: [
