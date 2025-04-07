@@ -1,3 +1,4 @@
+// src/messages/schemas/message.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Chat } from 'src/chats/schemas/chat.schema';
@@ -16,6 +17,9 @@ export class Message extends Document {
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
   readBy: Types.ObjectId[] | User[];
+
+  @Prop({ default: false })
+  isDelivered: boolean;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

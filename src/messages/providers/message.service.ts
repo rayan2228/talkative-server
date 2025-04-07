@@ -32,4 +32,14 @@ export class MessagesService {
       .populate('sender', 'name email')
       .sort({ createdAt: 1 });
   }
+
+  async markMessageAsRead(messageId: string, userId: string) {
+    return this.messageModel
+      .findByIdAndUpdate(
+        messageId,
+        { $addToSet: { readBy: userId } },
+        { new: true },
+      )
+      .populate('sender', '-password');
+  }
 }

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
 import { CreateMessageDto } from './dtos/create-message.dto';
-import { MessagesService } from './proividers/message.service';
+import { MessagesService } from './providers/message.service';
 
 @Controller('messages')
 export class MessagesController {
